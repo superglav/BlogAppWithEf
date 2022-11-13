@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bloggie.Web.Models.Domain
 {
@@ -12,7 +13,19 @@ namespace Bloggie.Web.Models.Domain
         public string  FeaturedImageUrl { get; set; }
         public string  ShortDescription { get; set; }
         public string UrlHandle { get; set; }
-        public DateTime PublishDate { get; set; }
+        public DateTime PublishDate
+        {
+            get
+            {
+                return this.publishDate.HasValue
+                   ? this.publishDate.Value
+                   : DateTime.Now;
+            }
+
+            set { this.publishDate = value; }
+        }
+
+        private DateTime? publishDate = null;
         public string Author { get; set; }
         public bool Visible { get; set; }
 

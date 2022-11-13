@@ -1,30 +1,47 @@
-﻿@page
+﻿@page 
 @model Bloggie.Web.Pages.Admin.Blogs.ListModel
 @{
 }
-<div class="bg-secondary bg-opacity-10 py-2 mb-5">
-    <div class="container">
-        <h1> Blog Posts</h1>
+@if (Model.BlogPosts != null && Model.BlogPosts.Any() ){
+    <div class="bg-secondary bg-opacity-10 py-2 mb-5">
+        <div class="container">
+            <h1> Blog Posts</h1>
+        </div>
     </div>
-</div>
-<div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Heading</td>
-                <td></td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ( var item in Model.BlogPosts){
+    <div class="container">
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Heading</td>
-                    <td><a href="/Admin/Blogs/Edit/@item.Id" class="btn btn-secondary">View</a></td>
-                    
+                    <td>Id</td>
+                    <td>Heading</td>
+                    <td></td>
+                    <td></td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.BlogPosts)
+                {
+                    <form method="post">
+                    <tr>
+                        <td>@item.Id</td>
+                        <input type="text" class="form-control" name="id" value="@item.Id" hidden>
+                        <td>@item.Heading</td>
+                        <td>@item.PublishDate</td>
+                        <td>
+                            <a href="/Admin/Blogs/Edit/@item.Id" class="btn btn-primary">Edit</a>
+                            <button type="submit" class="btn btn-danger" asp-page-handler="Delete">Delete</button>
+                        </td>
+
+                    </tr>
+                    </form>
+
+                }
+            </tbody>
+        </table>
+    </div>
+}else
+{
+    <div class="container">
+        <p>No Blog posts were found!</p>
+    </div>
+}

@@ -9,6 +9,8 @@ namespace Bloggie.Web.Pages.Admin.Blogs
 {
     public class AddModel : PageModel
     {
+        public String errorMessage = "";
+
         private readonly BloggieDbContext bloggieDbContext;
 
         [BindProperty]
@@ -23,25 +25,54 @@ namespace Bloggie.Web.Pages.Admin.Blogs
 
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
-            var blogPost = new BlogPost
-            {
-                Heading = AddBlogPostRequest.Heading,
-                PageTitle = AddBlogPostRequest.PageTitle,
-                Content = AddBlogPostRequest.Content,
-                ShortDescription = AddBlogPostRequest.ShortDescription,
-                FeaturedImageUrl = AddBlogPostRequest.FeaturedImageUrl,
-                UrlHandle = AddBlogPostRequest.UrlHandle,
-                PublishDate = AddBlogPostRequest.PublishDate,
-                Author = AddBlogPostRequest.Author,
-                Visible = AddBlogPostRequest.Visible,
-            };
-            bloggieDbContext.BlogPosts.Add(blogPost);
-            bloggieDbContext.SaveChanges();
 
-            return RedirectToPage("/Admin/Blogs/List");
+            try
+            {
+                if (AddBlogPostRequest.Heading.Length != 0 || AddBlogPostRequest.PageTitle.Length != 0 || AddBlogPostRequest.Content.Length != 0
+                    || AddBlogPostRequest.ShortDescription.Length != 0 || AddBlogPostRequest.FeaturedImageUrl.Length != 0 || AddBlogPostRequest.UrlHandle.Length != 0
+                     || AddBlogPostRequest.Author.Length != 0 )
+                {
+                    var time = AddBlogPostRequest.PublishDate;
+                    if (time == null)
+                    {
+                        time = DateTime.Now;
+                    }
+                    var blogPost = new BlogPost
+                    {
+                        Heading = AddBlogPostRequest.Heading,
+                        PageTitle = AddBlogPostRequest.PageTitle,
+                        Content = AddBlogPostRequest.Content,
+                        ShortDescription = AddBlogPostRequest.ShortDescription,
+                        FeaturedImageUrl = AddBlogPostRequest.FeaturedImageUrl,
+                        UrlHandle = AddBlogPostRequest.UrlHandle,
+                        PublishDate = (DateTime)time,
+                        Author = AddBlogPostRequest.Author,
+                        Visible = AddBlogPostRequest.Visible,
+
+
+                    };
+
+                    await bloggieDbContext.BlogPosts.AddAsync(blogPost);
+                    await bloggieDbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                errorMessage = "All the fields are required";
+                return Page();
+            }
+                
+                    
+            return Redirect("/Admin/Blogs/List");
         }
-        
     }
-}
+ }
+            
+            
+
+        
+    
+

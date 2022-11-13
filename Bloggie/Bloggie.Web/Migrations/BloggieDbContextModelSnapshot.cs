@@ -48,7 +48,7 @@ namespace Bloggie.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("PublishDate")
+                    b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ShortDescription")
@@ -64,7 +64,7 @@ namespace Bloggie.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlogPosts");
+                    b.ToTable("BlogPosts", (string)null);
                 });
 
             modelBuilder.Entity("Bloggie.Web.Models.Domain.Tag", b =>
@@ -82,7 +82,7 @@ namespace Bloggie.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 #pragma warning restore 612, 618
         }

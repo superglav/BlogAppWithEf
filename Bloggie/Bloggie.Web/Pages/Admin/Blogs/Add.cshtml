@@ -8,17 +8,24 @@
 <h1> Add Blog Post</h1> 
 
     </div>
-
 </div>
-<div>
+
+@if (Model.errorMessage.Length > 0)
+{
+    <div class="container alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>@Model.errorMessage</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+}
+
         <form method="post">
     <div class="container mb-3">
                 <label for="heading" class="form-label">Heading</label>
-                <input type="text" class="form-control" id="heading" asp-for="AddBlogPostRequest.Heading" >
+                <input type="text" class="form-control" id="heading" asp-for="AddBlogPostRequest.Heading" />
     </div>
     <div class="container mb-3">
             <label for="pageTitle" class="form-label">Page Title</label>
-            <input type="text" class="form-control" id="pageTitle" asp-for="AddBlogPostRequest.PageTitle">
+            <input type="text" class="form-control" id="pageTitle" asp-for="AddBlogPostRequest.PageTitle"/>
     </div>
     <div class="container mb-3">
             <label for="content" class="form-label">Content</label>
@@ -26,27 +33,27 @@
     </div>
         <div class="container mb-3">
             <label for="featuredImageUrl" class="form-label">Featured Image Url</label>
-            <input type="text" class="form-control" id="featuredImageUrl" asp-for="AddBlogPostRequest.FeaturedImageUrl">
+            <input type="text" class="form-control" id="featuredImageUrl" asp-for="AddBlogPostRequest.FeaturedImageUrl"/>
         </div>
         <div class="container mb-3">
             <label for="shortDescription" class="form-label">Short Description</label>
-            <input type="text" class="form-control" id="shortDescription" asp-for="AddBlogPostRequest.ShortDescription">
+            <input type="text" class="form-control" id="shortDescription" asp-for="AddBlogPostRequest.ShortDescription"/>
         </div>
         <div class="container mb-3">
             <label for="urlHandle" class="form-label">Url Handle</label>
-            <input type="text" class="form-control" id="urlHandle" asp-for="AddBlogPostRequest.UrlHandle">
+            <input type="text" class="form-control" id="urlHandle" asp-for="AddBlogPostRequest.UrlHandle"/>
         </div>
         <div class="container mb-3">
             <label for="publishedDate" class="form-label">Published date</label>
-            <input type="date" class="form-control" id="publichsedDate" asp-for="AddBlogPostRequest.PublishDate">
+            <input type="date" class="form-control" id="publichsedDate" asp-for="AddBlogPostRequest.PublishDate"/>
         </div>
         <div class="container mb-3">
             <label for="author" class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" asp-for="AddBlogPostRequest.Author">
+            <input type="text" class="form-control" id="author" asp-for="AddBlogPostRequest.Author"/>
         </div>
 
         <div class="container mb-3 mt-3">
-            <input class="form-check-input" type="checkbox"  id="isVisible" asp-for="AddBlogPostRequest.Visible">
+            <input class="form-check-input" type="checkbox"  id="isVisible" asp-for="AddBlogPostRequest.Visible"/>
             <label class="form-check-label" for="isVisible">
                 Is Visible
             </label>
