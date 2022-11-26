@@ -5,6 +5,7 @@ using Bloggie.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Server.IIS.Core;
+using System.Text.Json;
 
 namespace Bloggie.Web.Pages.Admin.Blogs
 {
@@ -15,7 +16,8 @@ namespace Bloggie.Web.Pages.Admin.Blogs
 
         [BindProperty]
         public AddBlogPost AddBlogPostRequest { get; set; }
-
+        [BindProperty]
+        public IFormFile FeaturedImage { get; set; }
         public AddModel(IBlogPostRepository blogPostRepository)
         {
             this.blogPostRepository = blogPostRepository;
@@ -55,6 +57,13 @@ namespace Bloggie.Web.Pages.Admin.Blogs
                     };
 
                    await blogPostRepository.AddAsync(blogPost);
+
+                    var notification = new Notification
+                    {
+                        Type = enums.NotificationType.Success,
+                        Message = "New Blog Created!"
+                    };
+                    TempData["Notification"] = JsonSerializer.Serialize(notification);
                 }
             }
             catch (Exception)

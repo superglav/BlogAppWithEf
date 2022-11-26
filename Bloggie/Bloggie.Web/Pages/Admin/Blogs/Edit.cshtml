@@ -10,17 +10,8 @@
     </div>
 
 </div>
-@{
-    var messageDescritpion = (string)ViewData["messageDescription"];
-}
-@if (!string.IsNullOrWhiteSpace(messageDescritpion)){
-    <div class="container" >
-    <div class="alert alert-success alert-dismissible fade show mb-5" role="alert">
-        @Html.Raw(messageDescritpion)
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    </div>
-}
+<partial name="_Notification"></partial>
+
 @if (Model.BlogPost != null){
     <div>
         <form method="post">
@@ -39,6 +30,17 @@
             <div class="container mb-3">
                 <label for="content" class="form-label">Content</label>
                 <textarea class="form-control" id="content" asp-for="BlogPost.Content"></textarea>
+            </div>
+            <div class="container mb-3">
+                <label for="featuredImageUpload" class="form-label">Featured Image Upload</label>
+                <input type="file" id="featuredImageUpload" asp-for="FeaturedImage" />
+                @if (Model.BlogPost.FeaturedImageUrl != null)
+                {
+                    <img src="@Model.BlogPost.FeaturedImageUrl" id="featuredImageDisplay" style="display:block; width:300px;" />
+                }else
+                {
+                    <img src="" id="featuredImageDisplay" style="display:none; width:300px;" />
+                }
             </div>
             <div class="container mb-3">
                 <label for="featuredImageUrl" class="form-label">Featured Image Url</label>
@@ -80,4 +82,40 @@ else {
     <div class="container">
         <p>Blog Post not found</p>
     </div>
+}
+
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor("#content", {
+            imageUploadURL: '/api/images'
+        });
+
+        const featuredImageUploadelement = document.getElementById("featuredImageUpload");
+        const featuredImageUrl = document.getElementById("featuredImageUrl");
+        const featuredImageDisplay = document.getElementById("featuredImageDisplay");
+
+        async function uploadFeaturedImage(e) {
+
+            console.log(e.target.files[0]);
+
+            let data = new FormData();
+            data.append('file', e.target.files[0]);
+
+            await fetch('/api/images', {
+                method: 'POST',
+                headers: {
+                    'Accept': '*/*',
+                },
+                body: data
+            }).then(response => response.json())
+                .then(result => {
+                    featuredImageUrl.value = result.link;
+                    featuredImageDisplay.style.display = 'block';
+                    featuredImageDisplay.src = result.link;
+                })
+        };
+
+        featuredImageUploadelement.addEventListener('change', uploadFeaturedImage);
+    </script>
+
 }

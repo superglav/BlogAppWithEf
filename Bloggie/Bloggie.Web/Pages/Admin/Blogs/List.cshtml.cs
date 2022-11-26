@@ -1,9 +1,11 @@
 using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
+using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Bloggie.Web.Pages.Admin.Blogs
@@ -21,6 +23,12 @@ namespace Bloggie.Web.Pages.Admin.Blogs
         }
         public async Task OnGet()
         {
+            var notificationJson = (string)TempData["Notification"];
+            if (notificationJson != null)
+            {
+                ViewData["Notification"] = JsonSerializer.Deserialize<Notification>(notificationJson);
+            }
+
            BlogPosts= (await blogPostRepository.GetAllAsync())?.ToList();
         }
         public async Task<IActionResult> OnPostDelete()
@@ -29,7 +37,13 @@ namespace Bloggie.Web.Pages.Admin.Blogs
             var deleted = await blogPostRepository.DeleteAsync(BlogPost.Id);
             if (deleted)
             {
-                return RedirectToPage("Admin/Blogs/List");
+                var notification = new Notification
+                {
+                    Message = "The blogpost has been deleted!",
+                    Type = enums.NotificationType.Success,
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+                return RedirectToPage("/Admin/Blogs/List");
             }
             return Page();
         }

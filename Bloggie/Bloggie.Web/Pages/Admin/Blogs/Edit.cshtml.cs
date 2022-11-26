@@ -1,9 +1,11 @@
 using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
+using Bloggie.Web.Models.ViewModels;
 using Bloggie.Web.Repositories;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json;
 
 namespace Bloggie.Web.Pages.Admin.Blogs
 {
@@ -13,6 +15,8 @@ namespace Bloggie.Web.Pages.Admin.Blogs
 
         [BindProperty]
         public BlogPost? BlogPost { get; set; }
+        [BindProperty]
+        public IFormFile FeaturedImage { get; set; }
         public EditModel(IBlogPostRepository blogPostRepository)
         {
             this.blogPostRepository = blogPostRepository;
@@ -26,19 +30,49 @@ namespace Bloggie.Web.Pages.Admin.Blogs
 
         public async Task<IActionResult> OnPostEdit()
         {
-            await blogPostRepository.UpdateAsync(BlogPost);
-            ViewData["MessageDescription"] = "Record was successfully saved";
+           
+            try
+            {
+                await blogPostRepository.UpdateAsync(BlogPost);
 
-            return Page();
+                var notification = new Notification
+                {
+                    Type = enums.NotificationType.Success,
+                    Message = "Record updated successfully!"
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+
+            }
+            catch (Exception ex)
+            {
+                ViewData["Notification"] = new Notification
+                {
+                    Message = "There was an error",
+                    Type = enums.NotificationType.Error
+                };
+                return Page();
+            }
+            
+            return RedirectToPage("/Admin/Blogs/List");
+
+            
+            
         }
 
-
+        
         public async Task<IActionResult> OnPostDelete()
         {
            var deleted =  await blogPostRepository.DeleteAsync(BlogPost.Id);
             if (deleted)
             {
-            return RedirectToPage("Admin/Blogs/List");
+                var notification = new Notification
+                {
+                    Type = enums.NotificationType.Success,
+                    Message = "the blogpost has been deleted!"
+                };
+                TempData["Notification"] = JsonSerializer.Serialize(notification);
+
+                return RedirectToPage("/Admin/Blogs/List");
             }
             
             return Page();

@@ -2,12 +2,17 @@
 @model Bloggie.Web.Pages.Admin.Blogs.ListModel
 @{
 }
-@if (Model.BlogPosts != null && Model.BlogPosts.Any() ){
-    <div class="bg-secondary bg-opacity-10 py-2 mb-5">
-        <div class="container">
-            <h1> Blog Posts</h1>
-        </div>
+
+
+<div class="bg-secondary bg-opacity-10 py-2 mb-5">
+    <div class="container">
+        <h1> Blog Posts</h1>
     </div>
+</div>
+<partial name="_Notification"></partial>
+@if (Model.BlogPosts != null && Model.BlogPosts.Any() ){
+    
+   
     <div class="container">
         <table class="table">
             <thead>
