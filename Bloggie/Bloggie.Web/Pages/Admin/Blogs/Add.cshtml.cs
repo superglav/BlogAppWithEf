@@ -15,6 +15,8 @@ namespace Bloggie.Web.Pages.Admin.Blogs
         private IBlogPostRepository blogPostRepository;
 
         [BindProperty]
+        public string Tags { get; set; }
+        [BindProperty]
         public AddBlogPost AddBlogPostRequest { get; set; }
         [BindProperty]
         public IFormFile FeaturedImage { get; set; }
@@ -52,7 +54,7 @@ namespace Bloggie.Web.Pages.Admin.Blogs
                         PublishDate = (DateTime)time,
                         Author = AddBlogPostRequest.Author,
                         Visible = AddBlogPostRequest.Visible,
-
+                        Tags = new List<Tag>(Tags.Split(',').Select(x => new Tag() { Name = x.Trim() }))
 
                     };
 

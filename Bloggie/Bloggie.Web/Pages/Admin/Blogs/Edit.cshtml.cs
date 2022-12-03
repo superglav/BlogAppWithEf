@@ -12,6 +12,8 @@ namespace Bloggie.Web.Pages.Admin.Blogs
     public class EditModel : PageModel
     {
         private readonly IBlogPostRepository blogPostRepository;
+        [BindProperty]
+        public string Tags { get; set; }
 
         [BindProperty]
         public BlogPost? BlogPost { get; set; }
@@ -24,6 +26,10 @@ namespace Bloggie.Web.Pages.Admin.Blogs
         public async Task OnGet(Guid id)
         {
            BlogPost =  await blogPostRepository.GetAsync(id);
+            if (BlogPost != null && BlogPost.Tags != null)
+            {
+                Tags = string.Join(',', BlogPost.Tags.Select(x=> x.Name));
+            }
             
         }
 
@@ -33,6 +39,7 @@ namespace Bloggie.Web.Pages.Admin.Blogs
            
             try
             {
+                BlogPost.Tags = new List<Tag>(Tags.Split(',').Select(x => new Tag() { Name = x.Trim() }));
                 await blogPostRepository.UpdateAsync(BlogPost);
 
                 var notification = new Notification
