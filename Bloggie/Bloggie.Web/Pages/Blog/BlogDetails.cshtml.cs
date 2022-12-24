@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Bloggie.Web.Pages.Blog
 {
-    public class DetailsModel : PageModel
+    public class BlogDetailsModel : PageModel
     {
         private readonly IBlogPostRepository blogPostRepository;
         [BindProperty]
         public BlogPost BlogPost { get; set; }
-        public DetailsModel(IBlogPostRepository blogPostRepository)
+        public BlogDetailsModel(IBlogPostRepository blogPostRepository)
         {
             this.blogPostRepository = blogPostRepository;
         }

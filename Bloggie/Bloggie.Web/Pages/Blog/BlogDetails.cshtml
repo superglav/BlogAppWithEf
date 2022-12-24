@@ -1,5 +1,5 @@
 ﻿@page "/blog/{urlHandle}"
-@model Bloggie.Web.Pages.Blog.DetailsModel
+@model Bloggie.Web.Pages.Blog.BlogDetailsModel
 @{
     ViewData["Title"] = Model.BlogPost.PageTitle;
 }
@@ -21,7 +21,7 @@
                     {
                         foreach (var tag in Model.BlogPost.Tags)
                         {
-                            <span class="badge bg-dark"><a href="/blog/blogtags/@tag.Name">@tag.Name</a></span> 
+                            <span class="badge bg-dark"><a href="/tags/@tag.Name">@tag.Name</a></span> 
 
                         }
                     }
