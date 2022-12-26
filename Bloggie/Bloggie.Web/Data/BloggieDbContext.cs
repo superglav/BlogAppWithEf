@@ -7,7 +7,7 @@ namespace Bloggie.Web.Data
     {
         internal static readonly object BlogPost;
 
-        public BloggieDbContext(DbContextOptions options) : base(options)
+        public BloggieDbContext(DbContextOptions<BloggieDbContext> options) : base(options)
         {
         }
         
