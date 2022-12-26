@@ -171,7 +171,7 @@ namespace Bloggie.Web.Migrations.AuthDb
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "0bfc168e-ce01-4ae0-94e8-6db06656632f", 0, "cc43fcf1-1bef-4178-83d5-ce8670f16454", "superadmin@blogie.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEHqmGL2koD1vgHgdRIor7oCj54ICvjk9+/ZaSIXcL+yu8ctpWDqxDxxb1i6RiC9hew==", null, false, "92c713c6-b75d-418b-b80b-9855f86117df", false, "Superadmin@bloggie.com" });
+                values: new object[] { "0bfc168e-ce01-4ae0-94e8-6db06656632f", 0, "3e35e4e3-8b53-4e95-949f-154889611de8", "superadmin@blogie.com", false, false, null, null, null, "AQAAAAEAACcQAAAAEA1RjfN5FXzdlmpY4N272YI5scVsNTG6f8GbH6bDRjr8dgewRQHl/++Vs1Y43jCfeA==", null, false, "c6a6440c-d9e8-4364-a9fb-93329922fea7", false, "superAdmin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

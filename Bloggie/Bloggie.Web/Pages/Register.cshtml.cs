@@ -10,7 +10,7 @@ namespace Bloggie.Web.Pages
         private readonly UserManager<IdentityUser> userManager;
 
         [BindProperty]
-        public register RegisterViewModel { get; set; }
+        public Register RegisterViewModel { get; set; }
         public RegisterModel(UserManager<IdentityUser> userManager)
         {
             this.userManager = userManager;
@@ -21,6 +21,8 @@ namespace Bloggie.Web.Pages
 
         public async Task<IActionResult> OnPost()
         {
+            Notification obj = new Notification();
+            obj.Messages = new List<string>();
             var user = new IdentityUser
             {
                 UserName = RegisterViewModel.UserName,
@@ -28,7 +30,7 @@ namespace Bloggie.Web.Pages
             };
             var identityResutl = await userManager.CreateAsync(user, RegisterViewModel.Password);
 
-            if(identityResutl.Succeeded)
+            if (identityResutl.Succeeded)
             {
                 ViewData["Notification"] = new Notification
                 {
@@ -37,13 +39,19 @@ namespace Bloggie.Web.Pages
                 };
 
                 return Page();
-            }
-
+            }else
             {
+                foreach (var item in identityResutl.Errors)
+                {
+
+                   obj.Messages.Add(item.Description);
+                }
                 ViewData["Notification"] = new Notification
                 {
+
                     Type = enums.NotificationType.Error,
-                    Message = "Something went wrong."
+                    Messages = obj.Messages
+
                 };
 
                 return Page();

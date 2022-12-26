@@ -49,12 +49,12 @@ namespace Bloggie.Web.Data
             var superAdminUser = new IdentityUser()
             {
                 Id = superAdminId,
-                UserName = "Superadmin@bloggie.com",
+                UserName = "superAdmin",
                 Email = "superadmin@blogie.com"
             };
 
             superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()
-                .HashPassword(superAdminUser, "superAdmin123");
+                .HashPassword(superAdminUser, "super@Admin123");
 
             builder.Entity<IdentityUser>().HasData(superAdminUser);
             // Add All roles To Super Admin User
