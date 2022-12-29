@@ -5,7 +5,6 @@ namespace Bloggie.Web.Data
 {
     public class BloggieDbContext : DbContext
     {
-        internal static readonly object BlogPost;
 
         public BloggieDbContext(DbContextOptions<BloggieDbContext> options) : base(options)
         {
@@ -13,6 +12,8 @@ namespace Bloggie.Web.Data
         
             public DbSet<BlogPost> BlogPosts { get; set; }
             public DbSet<Tag> Tags { get; set; }
+            public DbSet<blogPostLike> BlogPostLike { get; set; }
+
         
     }
 }

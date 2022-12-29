@@ -32,15 +32,21 @@ namespace Bloggie.Web.Pages
 
             if (identityResutl.Succeeded)
             {
-                ViewData["Notification"] = new Notification
-                {
-                    Type = enums.NotificationType.Success,
-                    Message = "user registered successfully."
-                };
+                var addRolesResult = await userManager.AddToRoleAsync(user, "User");
 
-                return Page();
-            }else
-            {
+                if (addRolesResult.Succeeded)
+                {
+                    ViewData["Notification"] = new Notification
+                    {
+                        Type = enums.NotificationType.Success,
+                        Message = "user registered successfully."
+                    };
+
+                    return RedirectToPage("Index");
+                }
+
+                
+            }
                 foreach (var item in identityResutl.Errors)
                 {
 
@@ -55,7 +61,7 @@ namespace Bloggie.Web.Pages
                 };
 
                 return Page();
-            }
+            
         }
 
     }

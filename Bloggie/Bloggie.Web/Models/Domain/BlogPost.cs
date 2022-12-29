@@ -30,7 +30,7 @@ namespace Bloggie.Web.Models.Domain
         public bool Visible { get; set; }
 
         // navigation property
-
         public ICollection<Tag> Tags { get; set; }
+        public ICollection<blogPostLike> Likes { get; set; }
     }
 }

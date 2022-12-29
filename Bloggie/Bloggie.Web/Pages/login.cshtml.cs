@@ -24,7 +24,7 @@ namespace Bloggie.Web.Pages
         {
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(string ReturnUrl)
         {
             //IdentityUser retrievedUser = await authDbContext.Users.FirstOrDefaultAsync(u => u.UserName == "Superadmin@bloggie.com");
             //PasswordHasher <IdentityUser> passwordHasher = new PasswordHasher<IdentityUser>();
@@ -33,10 +33,14 @@ namespace Bloggie.Web.Pages
             //PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(retrievedUser, retrievedUser.PasswordHash, enteredPassword);
 
             var signInResult = await signInManager.PasswordSignInAsync
-                (LoginViewModel.UserName, LoginViewModel.Password, false, false);
+                (LoginViewModel.UserName, LoginViewModel.Password, false, true);
 
             if (signInResult.Succeeded)
             {
+                if (!string.IsNullOrEmpty(ReturnUrl))
+                {
+                    return RedirectToPage(ReturnUrl);
+                }
                 return RedirectToPage("Index");
             }
             else

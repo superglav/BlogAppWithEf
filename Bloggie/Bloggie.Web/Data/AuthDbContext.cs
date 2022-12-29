@@ -50,7 +50,9 @@ namespace Bloggie.Web.Data
             {
                 Id = superAdminId,
                 UserName = "superAdmin",
-                Email = "superadmin@blogie.com"
+                Email = "superadmin@blogie.com",
+                NormalizedEmail = "superadmin@blogie.com".ToUpper(),
+                NormalizedUserName = "superadmin@blogie.com".ToUpper(),
             };
 
             superAdminUser.PasswordHash = new PasswordHasher<IdentityUser>()

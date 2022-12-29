@@ -26,12 +26,18 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
 
+});
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.AccessDeniedPath = "/AccessDenied";
 });
 
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepositoryCloudinary>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IBlogPostLikeRepository, BlogPostLikeRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
