@@ -1,4 +1,6 @@
-﻿namespace Bloggie.Web.Models.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Bloggie.Web.Models.ViewModels
 {
     public class User
     {

@@ -24,7 +24,7 @@ namespace Bloggie.Web.Pages
         {
         }
 
-        public async Task<IActionResult> OnPost(string ReturnUrl)
+        public async Task<IActionResult> OnPost(string? ReturnUrl)
         {
             //IdentityUser retrievedUser = await authDbContext.Users.FirstOrDefaultAsync(u => u.UserName == "Superadmin@bloggie.com");
             //PasswordHasher <IdentityUser> passwordHasher = new PasswordHasher<IdentityUser>();
@@ -32,27 +32,36 @@ namespace Bloggie.Web.Pages
             //// Verify the entered password
             //PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(retrievedUser, retrievedUser.PasswordHash, enteredPassword);
 
-            var signInResult = await signInManager.PasswordSignInAsync
+            if (ModelState.IsValid)
+            {
+                var signInResult = await signInManager.PasswordSignInAsync
                 (LoginViewModel.UserName, LoginViewModel.Password, false, true);
 
-            if (signInResult.Succeeded)
-            {
-                if (!string.IsNullOrEmpty(ReturnUrl))
+                if (signInResult.Succeeded)
                 {
-                    return RedirectToPage(ReturnUrl);
+                    if (!string.IsNullOrEmpty(ReturnUrl))
+                    {
+                        return RedirectToPage(ReturnUrl);
+                    }
+                    return RedirectToPage("Index");
                 }
-                return RedirectToPage("Index");
+                else
+                {
+                    ViewData["Notification"] = new Notification
+                    {
+                        Type = enums.NotificationType.Error,
+                        Message = "Unable to log in"
+                    };
+
+                    return Page();
+                }
             }
             else
             {
-                ViewData["Notification"] = new Notification
-                {
-                    Type = enums.NotificationType.Error,
-                    Message = "Unable to log in"
-                };
-
                 return Page();
+            }
+            
             }
         }
     }
-}
+

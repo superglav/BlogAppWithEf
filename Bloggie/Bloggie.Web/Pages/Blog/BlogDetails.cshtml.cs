@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bloggie.Web.Pages.Blog
 {
@@ -16,7 +17,6 @@ namespace Bloggie.Web.Pages.Blog
         private readonly UserManager<IdentityUser> userManager;
         private readonly IBlogPostCommentRepository blogPostCommentRepository;
 
-        [BindProperty]
         public BlogPost BlogPost { get; set; }
         public List<BlogComment> Comments { get; set; }
         public int TotalLikes { get; set; }
@@ -24,6 +24,9 @@ namespace Bloggie.Web.Pages.Blog
         [BindProperty]
         public Guid BlogPostId { get; set; }
         [BindProperty]
+        [Required]
+        [MinLength(1)]
+        [MaxLength(200)]
         public string CommentDescription { get; set; }
 
         public BlogDetailsModel(IBlogPostRepository blogPostRepository,
@@ -42,40 +45,32 @@ namespace Bloggie.Web.Pages.Blog
 
         public async Task<IActionResult> OnGet(string urlHandle)
         {
-           BlogPost =  await blogPostRepository.GetAsync(urlHandle);
-           if(BlogPost != null)
-            {
-                BlogPostId = BlogPost.Id;
-                if (signInManager.IsSignedIn(User))
-                {
-                var likes = await blogPostLikeRepository.GetLikesForBlog(BlogPost.Id);
-                    var userId = userManager.GetUserId(User);
-
-                  Liked =  likes.Any(x => x.UserId == Guid.Parse(userId));
-
-                   await GetComments();
-                }
-                TotalLikes =  await blogPostLikeRepository.GetTotalLikesForBlog(BlogPost.Id);
-            }
+            await GetBlog(urlHandle);
             return Page();
         }
 
         public async Task<IActionResult> OnPost(string urlHandle)
         {
-            if(signInManager.IsSignedIn(User) && !string.IsNullOrWhiteSpace(CommentDescription))
+            if (ModelState.IsValid)
             {
-                var userId = userManager.GetUserId(User);
-                var comment = new BlogPostComment()
-                {
-                    BlogPostId = BlogPostId,
-                    Description = CommentDescription,
-                    DateAdded = DateTime.Now,
-                    UserId = Guid.Parse(userId)
-            };
 
-            await blogPostCommentRepository.AddAsync(comment);
+                if (signInManager.IsSignedIn(User) && !string.IsNullOrWhiteSpace(CommentDescription))
+                {
+                    var userId = userManager.GetUserId(User);
+                    var comment = new BlogPostComment()
+                    {
+                        BlogPostId = BlogPostId,
+                        Description = CommentDescription,
+                        DateAdded = DateTime.Now,
+                        UserId = Guid.Parse(userId)
+                    };
+
+                    await blogPostCommentRepository.AddAsync(comment);
+                }
+                return RedirectToPage("/blog/blogdetails", new { urlHandle = urlHandle });
             }
-            return RedirectToPage("/blog/blogdetails", new { urlHandle = urlHandle });
+            await GetBlog(urlHandle);
+            return Page();
         }
 
         private async Task GetComments()
@@ -94,6 +89,23 @@ namespace Bloggie.Web.Pages.Blog
 
             Comments = blogCommentsViewModel;
         }
-        
+        private async Task GetBlog(string urlHandle)
+        {
+            BlogPost = await blogPostRepository.GetAsync(urlHandle);
+            if (BlogPost != null)
+            {
+                BlogPostId = BlogPost.Id;
+                if (signInManager.IsSignedIn(User))
+                {
+                    var likes = await blogPostLikeRepository.GetLikesForBlog(BlogPost.Id);
+                    var userId = userManager.GetUserId(User);
+
+                    Liked = likes.Any(x => x.UserId == Guid.Parse(userId));
+
+                    await GetComments();
+                }
+                TotalLikes = await blogPostLikeRepository.GetTotalLikesForBlog(BlogPost.Id);
+            }
+        }
     }
 }

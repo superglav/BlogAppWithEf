@@ -1,17 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bloggie.Web.Models.ViewModels
 {
     public class AddBlogPost
     {
+        [Required]
         public string Heading { get; set; }
+        [Required]
         public string PageTitle { get; set; }
+        [Required]
         public string Content { get; set; }
+        [Required]
         public string ShortDescription { get; set; }
+        [Required]
         public string FeaturedImageUrl { get; set; }
+        [Required]
         public string UrlHandle { get; set; }
-        public DateTime? PublishDate { get; set; } = DateTime.Now;
+        [Required]
+        public DateTime PublishDate { get; set; } = DateTime.Now;
+        [Required]
         public string Author { get; set; }
+        [Required]
         public bool Visible { get; set; }
     }
 }
