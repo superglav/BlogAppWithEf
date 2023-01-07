@@ -21,36 +21,38 @@ namespace Bloggie.Web.Pages
 
         public async Task<IActionResult> OnPost()
         {
-            Notification obj = new Notification();
-            obj.Messages = new List<string>();
-            var user = new IdentityUser
-            {
-                UserName = RegisterViewModel.UserName,
-                Email = RegisterViewModel.Email,
-            };
-            var identityResutl = await userManager.CreateAsync(user, RegisterViewModel.Password);
+            if (ModelState.IsValid) {
 
-            if (identityResutl.Succeeded)
-            {
-                var addRolesResult = await userManager.AddToRoleAsync(user, "User");
-
-                if (addRolesResult.Succeeded)
+                Notification obj = new Notification();
+                obj.Messages = new List<string>();
+                var user = new IdentityUser
                 {
-                    ViewData["Notification"] = new Notification
+                    UserName = RegisterViewModel.UserName,
+                    Email = RegisterViewModel.Email,
+                };
+                var identityResutl = await userManager.CreateAsync(user, RegisterViewModel.Password);
+
+                if (identityResutl.Succeeded)
+                {
+                    var addRolesResult = await userManager.AddToRoleAsync(user, "User");
+
+                    if (addRolesResult.Succeeded)
                     {
-                        Type = enums.NotificationType.Success,
-                        Message = "user registered successfully."
-                    };
+                        ViewData["Notification"] = new Notification
+                        {
+                            Type = enums.NotificationType.Success,
+                            Message = "user registered successfully."
+                        };
 
-                    return RedirectToPage("Index");
+                        return RedirectToPage("Index");
+                    }
+
+
                 }
-
-                
-            }
                 foreach (var item in identityResutl.Errors)
                 {
 
-                   obj.Messages.Add(item.Description);
+                    obj.Messages.Add(item.Description);
                 }
                 ViewData["Notification"] = new Notification
                 {
@@ -61,6 +63,11 @@ namespace Bloggie.Web.Pages
                 };
 
                 return Page();
+            }else
+            {
+                return Page();
+            }
+
             
         }
 

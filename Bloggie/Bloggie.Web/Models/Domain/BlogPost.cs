@@ -32,5 +32,6 @@ namespace Bloggie.Web.Models.Domain
         // navigation property
         public ICollection<Tag> Tags { get; set; }
         public ICollection<blogPostLike> Likes { get; set; }
+        public ICollection<BlogPostComment> Comments { get; set; }
     }
 }
