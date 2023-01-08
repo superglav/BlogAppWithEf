@@ -40,8 +40,7 @@
             </div>
             <div class="container mb-3">
                 <label for="featuredImageUpload" class="form-label">Featured Image Upload</label>
-                <input type="file" id="featuredImageUpload" asp-for="FeaturedImage" required/>
-                <span class="text-danger" asp-validation-for="FeaturedImage"></span>
+                <input type="file" id="featuredImageUpload" asp-for="FeaturedImage" />
 
                 @if (Model.BlogPost.FeaturedImageUrl != null)
                 {

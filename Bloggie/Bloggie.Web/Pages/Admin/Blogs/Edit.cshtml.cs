@@ -15,18 +15,21 @@ namespace Bloggie.Web.Pages.Admin.Blogs
     public class EditModel : PageModel
     {
         private readonly IBlogPostRepository blogPostRepository;
+        public EditModel(IBlogPostRepository blogPostRepository)
+        {
+            this.blogPostRepository = blogPostRepository;
+        }
+
+        [BindProperty]
+        public IFormFile? FeaturedImage { get; set; }
+
         [BindProperty]
         [Required]
         public string Tags { get; set; }
 
         [BindProperty]
         public EditBlogPostRequest BlogPost { get; set; }
-        [BindProperty]
-        public IFormFile FeaturedImage { get; set; }
-        public EditModel(IBlogPostRepository blogPostRepository)
-        {
-            this.blogPostRepository = blogPostRepository;
-        }
+        
         public async Task OnGet(Guid id)
         {
            var blogPostDomainModel =  await blogPostRepository.GetAsync(id);
