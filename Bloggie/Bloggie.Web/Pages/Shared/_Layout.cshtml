@@ -25,25 +25,25 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                    <ul class="navbar-nav flex-grow-1 text-center">
+                        <li class="nav-item ">
                             <a class="nav-link text-white" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
                         {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="navBarDropdownAdmin">
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link  dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="navBarDropdownAdmin">
                                     Admin
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navBarDropdownAdmin">
+                                <ul class="dropdown-menu text-center" style="background-color: #0c122a; " aria-labelledby="navBarDropdownAdmin">
                                     <li>
-                                        <a class="dropdown-item" href="/Admin/Blogs/Add">Add Blog Post</a>
+                                        <a class="dropdown-item" style=" color: white;" href="/Admin/Blogs/Add">Add Blog Post</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/Admin/Blogs/List">All Blog Posts</a>
+                                        <a class="dropdown-item" style=" color: white;" href="/Admin/Blogs/List">All Blog Posts</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/Admin/users/index">Users</a>
+                                        <a class="dropdown-item" style=" color: white;" href="/Admin/users/index">Users</a>
                                     </li>
                                 </ul>
                             </li>
